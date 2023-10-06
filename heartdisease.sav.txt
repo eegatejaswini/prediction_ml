@@ -1,0 +1,62 @@
+import joblib
+import pandas as pd
+
+# Load the trained logistic regression model
+model_filename = "heart_disease_model.pkl"
+model = joblib.load(model_filename)
+
+# Function to make predictions
+def predict_heart_disease(male, age, currentSmoker, cigsPerDay, BPMeds, prevalentStroke, prevalentHyp, diabetes, totChol, sysBP, diaBP, BMI, heartRate, glucose, TenYearCHD):
+    """
+    Predicts the probability of heart disease given user input.
+
+    Args:
+        male (int): 1 for male, 0 for female
+        age (int): Age of the individual
+        currentSmoker (int): 1 if the individual is a current smoker, 0 otherwise
+        cigsPerDay (int): Number of cigarettes smoked per day
+        BPMeds (int): 1 if the individual is on blood pressure medication, 0 otherwise
+        prevalentStroke (int): 1 if the individual has a prevalent stroke, 0 otherwise
+        prevalentHyp (int): 1 if the individual has prevalent hypertension, 0 otherwise
+        diabetes (int): 1 if the individual has diabetes, 0 otherwise
+        totChol (float): Total cholesterol level
+        sysBP (float): Systolic blood pressure
+        diaBP (float): Diastolic blood pressure
+        BMI (float): Body mass index (BMI)
+        heartRate (float): Heart rate
+        glucose (float): Glucose level
+        TenYearCHD (int): 1 if the individual has a 10-year risk of coronary heart disease, 0 otherwise
+
+    Returns:
+        str: Prediction result.
+    """
+    # Create a DataFrame with the input data
+    input_data = pd.DataFrame({
+        'male': [male],
+        'age': [age],
+        'currentSmoker': [currentSmoker],
+        'cigsPerDay': [cigsPerDay],
+        'BPMeds': [BPMeds],
+        'prevalentStroke': [prevalentStroke],
+        'prevalentHyp': [prevalentHyp],
+        'diabetes': [diabetes],
+        'totChol': [totChol],
+        'sysBP': [sysBP],
+        'diaBP': [diaBP],
+        'BMI': [BMI],
+        'heartRate': [heartRate],
+        'glucose': [glucose],
+        'TenYearCHD': [TenYearCHD]
+    })
+
+    # Make predictions
+    prediction = model.predict(input_data)[0]
+    probability = model.predict_proba(input_data)[0][1]
+
+    # Interpret the prediction
+    if prediction == 1:
+        result = f"High probability of heart disease (Probability: {probability:.2f})"
+    else:
+        result = f"Low probability of heart disease (Probability: {probability:.2f})"
+
+    return result
