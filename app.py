@@ -1,5 +1,5 @@
 import streamlit as st
-from model import heart_disease_pkl
+from model import app.py
 
 # Set the title and description of the app
 st.title("Heart Disease Prediction")
